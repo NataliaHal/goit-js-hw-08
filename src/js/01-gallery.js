@@ -1,18 +1,12 @@
-// Add imports above this line
-import { galleryItems } from './gallery-items';
-// Change code below this line
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-console.log(galleryItems);
-
-import SimpleLightbox from "simplelightbox/dist/simple-lightbox.min.js";
-import "simplelightbox/dist/simple-lightbox.min.css";
-
-const images = document.querySelectorAll('img');
-const lightbox = new SimpleLightbox('.gallery a');
+const images = document.querySelectorAll('.gallery img');
 
 images.forEach(image => {
-  image.addEventListener('click', (event) => {
-    event.preventDefault();
-    lightbox.open({ src: event.target.src });
+  image.addEventListener('click', event => {
+    const imageUrl = event.target.src;
+    const lightbox = new SimpleLightbox(imageUrl);
+    lightbox.open();
   });
-});c
+});
