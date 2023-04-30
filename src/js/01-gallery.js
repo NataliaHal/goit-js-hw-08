@@ -15,4 +15,4 @@ images.forEach(image => {
     event.preventDefault();
     lightbox.open({ src: event.target.src });
   });
-});
+});c
