@@ -1,60 +1,40 @@
+import throttle from 'lodash.throttle';
 
-import { throttle } from 'lodash.throttle';
+const submitForm = document.querySelector('.feedback-form');
+const STORAGE_KEY = 'feedback-form-state';
+const formFieldEmail = submitForm.elements.email;
+const formFieldMessage = submitForm.elements.message;
 
-
-const feedbackForm = document.querySelector('.feedback-form');
-const emailInput = feedbackForm.querySelector('input[name="email"]');
-const messageInput = feedbackForm.querySelector('textarea[name="message"]');
-
-
-const feedbackFormStateKey = 'feedback-form-state';
-
-
-emailInput.addEventListener(
-'input',
-throttle(() => {
-
-const state = {
-email: emailInput.value,
-message: messageInput.value,
-};
-localStorage.setItem(feedbackFormStateKey, JSON.stringify(state));
-}, 500)
-);
-
-messageInput.addEventListener(
-'input',
-throttle(() => {
-
-const state = {
-email: emailInput.value,
-message: messageInput.value,
-};
-localStorage.setItem(feedbackFormStateKey, JSON.stringify(state));
-}, 500)
-);
+submitForm.addEventListener('input', throttle(onInputData, 500));
+submitForm.addEventListener('submit', onFormSubmit);
 
 
-const savedState = localStorage.getItem(feedbackFormStateKey);
-if (savedState) {
+let parseValues = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-const state = JSON.parse(savedState);
-emailInput.value = state.email;
-messageInput.value = state.message;
+function onInputData() {
+  parseValues = {
+    email: formFieldEmail.value,
+    message: formFieldMessage.value,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(parseValues));
 }
 
 
-feedbackForm.addEventListener('submit', (event) => {
-event.preventDefault();
+function onFormSubmit(event) {
+  event.preventDefault();
 
-localStorage.removeItem(feedbackFormStateKey);
+  console.log(
+    parseValues ?? {
+      email: '',
+      message: '',
+    }
+  );
+ 
+  submitForm.reset();
+  localStorage.removeItem(STORAGE_KEY);
+}
 
-emailInput.value = '';
-messageInput.value = '';
-
-const state = {
-email: emailInput.value,
-message: messageInput.value,
-};
-console.log(state);
-});
+ if (parseValues) {
+   formFieldEmail.value = parseValues.email ?? '';
+   formFieldMessage.value = parseValues.message ?? '';
+ }
