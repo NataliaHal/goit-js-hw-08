@@ -19,7 +19,12 @@ captionDelay: 250,
 
 function markupGallery(listItems) {
 return listItems
-.map(
-item => <a class="gallery__item" href="${item.original}"> <img class="gallery__image" src="${item.preview}" alt="${item.description}" /> </a> )
-.join('');
+    .map(
+      item => `
+        <a class="gallery__item" href="${item.original}">
+          <img class="gallery__image" src="${item.preview}" alt="${item.description}" />
+        </a>
+      `
+    )
+    .join('');
 }
