@@ -13,5 +13,5 @@ player.on('timeupdate', throttle(() => {
 }, 1000));
 
 player.setCurrentTime(localStorage.getItem(CURRENT_TIME_KEY) || 0);
-localStorage.removeItem(CURRENT_TIME_KEY);
+
 
